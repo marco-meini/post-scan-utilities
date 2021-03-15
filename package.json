@@ -1,0 +1,32 @@
+{
+  "name": "post-scan-utilities",
+  "version": "1.0.0",
+  "description": "Post scan utilities",
+  "scripts": {
+    "lint": "tsc --noEmit && eslint --ext .ts ./src",
+    "build": "tsc && npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marco-meini/post-scan-utilities.git"
+  },
+  "author": "Marco Meini",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marco-meini/post-scan-utilities/issues"
+  },
+  "homepage": "https://github.com/marco-meini/post-scan-utilities#readme",
+  "dependencies": {
+    "commander": "^7.1.0",
+    "lodash": "^4.17.21",
+    "pdf-lib": "^1.16.0"
+  },
+  "devDependencies": {
+    "@types/fill-pdf": "^0.5.2",
+    "@types/lodash": "^4.14.168",
+    "@typescript-eslint/eslint-plugin": "^4.17.0",
+    "@typescript-eslint/parser": "^4.17.0",
+    "eslint": "^7.22.0",
+    "typescript": "^4.2.3"
+  }
+}
