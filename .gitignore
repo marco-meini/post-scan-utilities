@@ -61,9 +61,6 @@ package-lock.json
 # configurations
 config/config*.json
 
-# Typescript
-dist
-
 # Visual Studio Code Settings
 .vscode
 /.project
