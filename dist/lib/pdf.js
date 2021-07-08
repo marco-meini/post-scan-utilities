@@ -56,7 +56,33 @@ class Pdf {
                         mergedPdf.addPage(secondPages[i]);
                     }
                     if (progress)
-                        progress(i / max * 100);
+                        progress((i / max) * 100);
+                }
+                let mergedPdfFile = yield mergedPdf.save({
+                    addDefaultPage: false,
+                    useObjectStreams: false
+                });
+                fs.writeFileSync(destinationFile, mergedPdfFile);
+                return Promise.resolve();
+            }
+            catch (e) {
+                return Promise.reject(e);
+            }
+        });
+    }
+    static imagesToPdf(destinationFile, images) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let mergedPdf = yield pdf_lib_1.PDFDocument.create();
+                for (let i = 0; i < images.length; i++) {
+                    let page = mergedPdf.insertPage(i);
+                    const embeddedImage = yield mergedPdf.embedJpg(images[i]);
+                    page.drawImage(embeddedImage, {
+                        x: 0,
+                        y: 0,
+                        width: page.getWidth(),
+                        height: page.getHeight()
+                    });
                 }
                 let mergedPdfFile = yield mergedPdf.save({
                     addDefaultPage: false,

@@ -3,7 +3,7 @@ import * as _ from "lodash";
 import * as fs from "fs";
 
 export class Pdf {
-  static async merge(destinationFile: string, sourceFiles: Set<Buffer>): Promise<number> {
+  static async merge(destinationFile: string, sourceFiles: Array<Buffer>): Promise<number> {
     try {
       let mergedPdf = await PDFDocument.create();
       for (let item of sourceFiles) {
@@ -40,7 +40,31 @@ export class Pdf {
         if (i < secondPages.length) {
           mergedPdf.addPage(secondPages[i]);
         }
-        if (progress) progress(i / max * 100);
+        if (progress) progress((i / max) * 100);
+      }
+      let mergedPdfFile = await mergedPdf.save({
+        addDefaultPage: false,
+        useObjectStreams: false
+      });
+      fs.writeFileSync(destinationFile, mergedPdfFile);
+      return Promise.resolve();
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
+
+  static async imagesToPdf(destinationFile: string, images: Array<Buffer>) {
+    try {
+      let mergedPdf = await PDFDocument.create();
+      for (let i = 0; i < images.length; i++) {
+        let page = mergedPdf.insertPage(i);
+        const embeddedImage = await mergedPdf.embedJpg(images[i]);
+        page.drawImage(embeddedImage, {
+          x: 0,
+          y: 0,
+          width: page.getWidth(),
+          height: page.getHeight()
+        });
       }
       let mergedPdfFile = await mergedPdf.save({
         addDefaultPage: false,
